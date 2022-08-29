@@ -1,9 +1,12 @@
 class TodosController < ApplicationController
-  before_action :set_todo, only: %i[ show edit update destroy ]
+  before_action :set_todo, only: %i[ show edit update destroy   ]
 
 
   def listTodo
-    @todos = Todo.all
+    
+    @todos = Todo.all.to_ary()
+    
+    
   end 
   # GET /todos or /todos.json
   def index
