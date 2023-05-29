@@ -23,7 +23,7 @@ jobs:
       - name: Build Docker image
         run: docker build -t project_ror .
 
-       - name: Run simple test
+      - name: Run simple test
         run: |
           docker run -d --name project_ror
           sleep 5s  # Attendez quelques secondes pour permettre au conteneur de démarrer
