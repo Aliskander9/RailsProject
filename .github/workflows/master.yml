@@ -1,0 +1,40 @@
+name: Master CI
+
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: '0 0 * * *' # Exécution quotidienne à minuit
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install hadolint
+        run: |
+          wget -O /usr/local/bin/hadolint https://github.com/hadolint/hadolint/releases/download/v2.7.0/hadolint-Linux-x86_64
+          chmod +x /usr/local/bin/hadolint
+
+      - name: Build Docker image
+        run: docker build -t project_ror .
+
+      - name: Run simple test
+        run: |
+          docker run -d --name project_ror_container project_ror
+          sleep 5s  # Attendez quelques secondes pour permettre au conteneur de démarrer
+      
+          # Vérifier l'état du conteneur
+          docker ps -a
+      
+          # Exécutez des commandes pour tester
+          
+          docker exec project_ror rails test
+      
+          # Arrêtez et supprimez le conteneur
+          docker stop project_ror_container
+          docker rm project_ror_container
