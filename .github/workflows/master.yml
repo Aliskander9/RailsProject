@@ -25,7 +25,7 @@ jobs:
 
       - name: Run simple test
         run: |
-          docker run -d --name project_ror
+          docker run -d --name project_ror_container project_ror_image
           sleep 5s  # Attendez quelques secondes pour permettre au conteneur de démarrer
       
           # Vérifier l'état du conteneur
@@ -36,5 +36,5 @@ jobs:
           docker exec project_ror rails test
       
           # Arrêtez et supprimez le conteneur
-          docker stop project_ror
-          docker rm project_ror
+          docker stop project_ror_container
+          docker rm project_ror_container
