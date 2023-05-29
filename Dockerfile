@@ -1,4 +1,3 @@
-# Utilisez une image Ruby on Rails de base
 FROM ruby:3.1.2
 
 # Définissez le répertoire de travail dans le conteneur
@@ -13,6 +12,9 @@ RUN bundle install
 
 # Exposez le port sur lequel votre application Rails s'exécute
 EXPOSE 3000
+
+# Définissez le volume pour persister les données de la base de données
+VOLUME /app/db
 
 # Exécutez les migrations de la base de données
 RUN rails db:migrate
