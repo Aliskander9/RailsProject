@@ -31,7 +31,8 @@ jobs:
           docker ps -a
       
           # Exécutez des commandes pour tester
-          
+
+          docker exec project_ror_container bin/rails db:migrate RAILS_ENV=test
           docker exec project_ror_container rails test
       
           # Arrêtez et supprimez le conteneur
