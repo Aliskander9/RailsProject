@@ -24,7 +24,7 @@ jobs:
 
       - name: Run simple test
         run: |
-          docker run -d --name project_ror_container project_ror_image
+          docker run -d --name project_ror_container project_ror
           sleep 5s  # Attendez quelques secondes pour permettre au conteneur de démarrer
       
           # Vérifier l'état du conteneur
