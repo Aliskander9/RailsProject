@@ -44,7 +44,7 @@ jobs:
   
       - name: Tag Docker image with branch name
         run: |
-            docker tag project_ror project_ror:${{ github.ref_slug }}
+            docker tag project_ror skanderlatrach/project_ror:${{ github.ref_slug }}
   
       - name: Push Docker image to registry
         run: docker push skanderlatrach/project_ror:${{ github.ref_slug }}
