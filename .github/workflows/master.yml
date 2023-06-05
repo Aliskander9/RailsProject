@@ -1,4 +1,4 @@
-name: Master CI
+name: Master CI / CD
 
 on:
   push:
@@ -38,3 +38,14 @@ jobs:
           # Arrêtez et supprimez le conteneur
           docker stop project_ror_container
           docker rm project_ror_container
+
+      - name: Log in to Docker registry
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+  
+      - name: Tag Docker image with branch name
+        run: |
+            docker tag project_ror project_ror:${{ github.ref_slug }}
+  
+      - name: Push Docker image to registry
+        run: docker push skanderlatrach/project_ror:${{ github.ref_slug }}
+  
