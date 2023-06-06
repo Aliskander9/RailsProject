@@ -44,7 +44,12 @@ jobs:
   
       - name: Use Github Slug Action 
         uses: rlespinasse/github-slug-action@v4
-        
+
+      - name: Check branch slug
+        run: | 
+              echo "branch slug:${{ steps.slug.outputs.slug }}"
+              echo "branch slug:${{ github.ref_slug }}"
+
       - name: Tag Docker image with branch name
         run: |
             docker tag project_ror docker.io/skanderlatrach/project_ror:${{ github.ref_slug }}
