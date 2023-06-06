@@ -49,7 +49,7 @@ jobs:
         run: | 
               echo "branch slug:${{ github.base_ref }}"
               echo "branch slug:${{ github.ref }}"
-              echo "branch slug:${{ github.head_ref }}
+              echo "branch slug:${{ github.head_ref }}"
 
 
       - name: Tag Docker image with branch name
