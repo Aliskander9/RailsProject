@@ -62,6 +62,10 @@ jobs:
     if: github.ref == 'refs/heads/master' && needs.build.result == 'success'
 
     steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+    
       - name: Log in to Docker registry
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
