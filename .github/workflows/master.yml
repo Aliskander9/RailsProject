@@ -19,11 +19,15 @@ jobs:
         run: |
           wget -O /usr/local/bin/hadolint https://github.com/hadolint/hadolint/releases/download/v2.7.0/hadolint-Linux-x86_64
           chmod +x /usr/local/bin/hadolint
+          # Exécution de Hadolint
+          /usr/local/bin/hadolint Dockerfile
 
       - name: Build Docker image
         run: docker build -t project_ror .
+        id: stepBuild
 
       - name: Run simple test
+        id: stepTest
         run: |
           docker run -d --name project_ror_container project_ror
           sleep 5s  # Attendez quelques secondes pour permettre au conteneur de démarrer
@@ -50,8 +54,10 @@ jobs:
         run: echo "::set-output name=branch_name::$(basename "${{ github.ref }}")"
       
       - name: Tag Docker image with branch name
+      
         run: |
           docker build -t "${{ secrets.DOCKER_USERNAME }}/project_ror:${{ steps.branch_name.outputs.branch_name }}" .
+          if: steps.stepBuild.result == 'success' && steps.stepTest.result == 'success'
       
       - name: Push Docker image to registry
         run: docker push "${{ secrets.DOCKER_USERNAME }}/project_ror:${{ steps.branch_name.outputs.branch_name }}"
