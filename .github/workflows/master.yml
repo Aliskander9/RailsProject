@@ -54,13 +54,11 @@ jobs:
         run: echo "::set-output name=branch_name::$(basename "${{ github.ref }}")"
       
       - name: Tag Docker image with branch name
-      
+        if: ${{ success() && needs.build.outputs.check_success == 'true' }}
         run: |
-         if [[ "${{ steps.build_result.outputs.result }}" == 'success' && "${{ steps.test_result.outputs.result }}" == 'success' ]]; then
-          docker build -t "${{ secrets.DOCKER_USERNAME }}/project_ror:${{ steps.branch_name.outputs.branch_name }}" .
-         else
-          echo "Skipping docker build step because build or test step did not succeed."
-          fi
+         docker build -t "${{ secrets.DOCKER_USERNAME }}/project_ror:${{ steps.branch_name.outputs.branch_name }}" .
+
+          
       - name: Push Docker image to registry
         run: docker push "${{ secrets.DOCKER_USERNAME }}/project_ror:${{ steps.branch_name.outputs.branch_name }}"
 
