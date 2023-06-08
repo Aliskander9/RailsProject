@@ -24,10 +24,10 @@ jobs:
 
       - name: Build Docker image
         run: docker build -t project_ror .
-        id: stepBuild
+        id: build_result
 
       - name: Run simple test
-        id: stepTest
+        id: test_result
         run: |
           docker run -d --name project_ror_container project_ror
           sleep 5s  # Attendez quelques secondes pour permettre au conteneur de démarrer
@@ -56,9 +56,11 @@ jobs:
       - name: Tag Docker image with branch name
       
         run: |
+         if [[ "${{ steps.build_result.outputs.result }}" == 'success' && "${{ steps.test_result.outputs.result }}" == 'success' ]]; then
           docker build -t "${{ secrets.DOCKER_USERNAME }}/project_ror:${{ steps.branch_name.outputs.branch_name }}" .
-          if: steps.stepBuild.result == 'success' && steps.stepTest.result == 'success'
-      
+         else
+          echo "Skipping docker build step because build or test step did not succeed."
+          fi
       - name: Push Docker image to registry
         run: docker push "${{ secrets.DOCKER_USERNAME }}/project_ror:${{ steps.branch_name.outputs.branch_name }}"
 
