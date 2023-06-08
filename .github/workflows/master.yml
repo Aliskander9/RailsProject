@@ -80,7 +80,7 @@ jobs:
       
       - name: Tag Docker image with Git tag
         run: |
-          docker build -t "${{ secrets.DOCKER_USERNAME }}/project_ror:${{ steps.latest_tag.outputs.latest_tag }}"
+          docker build -t "${{ secrets.DOCKER_USERNAME }}/project_ror:${{ steps.latest_tag.outputs.latest_tag }}" .
       
       - name: Push Docker image to registry
         run: docker push "${{ secrets.DOCKER_USERNAME }}/project_ror:${{ steps.latest_tag.outputs.latest_tag }}"
