@@ -44,17 +44,16 @@ jobs:
   
       - name: Use Github Slug Action 
         uses: rlespinasse/github-slug-action@v4
-      - name: Check branch slug
-        run: | 
-              echo "branch slug:${{ steps.slug.outputs.slug }}"
-              echo "branch slug:${{ github.ref_slug }}"
-              echo "branch slug:${{ github.base_ref }}"
-              echo "branch slug:${{ github.ref }}"
-              echo "branch slug:${{ github.head_ref }}"
+      
+      - name: Get branch name
+
+        id: branch_name
+        run: echo "::set-output name=branch_name::$(basename "${{ github.ref }}")"
       
       - name: Tag Docker image with branch name
-        run: docker image build -t "${{ secrets.DOCKER_USERNAME }}/project_ror:${{ github.ref }}" .
-          
+        run: |
+          docker build -t "${{ secrets.DOCKER_USERNAME }}/project_ror:${{ steps.branch_name.outputs.branch_name }}" .
+      
       - name: Push Docker image to registry
-        run: docker image push "${{ secrets.DOCKER_USERNAME }}/project_ror:${{ github.ref }}"
+        run: docker push "${{ secrets.DOCKER_USERNAME }}/project_ror:${{ steps.branch_name.outputs.branch_name }}"
       
