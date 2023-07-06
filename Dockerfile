@@ -11,7 +11,7 @@ RUN gem install bundler:2.2.27 && \
     bundle install && \
     rails db:migrate
 
-# Exposez le port sur lequel votre application Rails s'exécute
+# Exposez le port sur lequel votre application Rails écoute
 EXPOSE 3000
 
 # Définissez le volume pour persister les données de la base de données
